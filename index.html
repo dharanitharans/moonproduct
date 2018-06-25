@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap.css" />
+<title>Insert title here</title>
+</head>
+<body>
+	<script>
+		function search(str) {
+			if (str.length == 0) {
+				document.getElementById("res").innerHTML = "";
+				document.getElementById("res").style.border = "0px";
+				return;
+			}
+
+			ajx = new XMLHttpRequest();
+			ajx.onreadystatechange = function() {
+				if (this.readyState === 4 && this.status === 200) {
+					var arr = JSON.parse(this.responseText);
+					var i, j;
+					var out = "";
+					for (i = 0; i < arr.length; i++) {
+						var name = arr[i].Name;
+						for (j = 0; j < name.length; j++) {
+							if (name.match(str))
+								{
+								out += "<a class=\"btn btn-primary\" href=\" success.html\">" + name + "</a><br>";
+								break;
+								}
+						}
+					}
+					document.getElementById("res").innerHTML = out;
+					document.getElementById("res").style.border = "1px solid #A5ACB2";
+				}
+			}
+			ajx.open("GET", "Search.json");
+			ajx.send();
+
+		}
+	</script>
+	<label>Search here:</label>
+	<input type="text" class="form-control" placeholder="search"
+		onkeyup="search(this.value)">
+	<div id=res></div>
+
+</body>
+</html>
